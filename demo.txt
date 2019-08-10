@@ -26,6 +26,9 @@ get /qclug/dinner
 ls -R /qclug
 
 # Demonstrate Failover
-bundle exec ruby show-failover.rb
+cd scripts 
+bundle exec ruby show-failover.rb 
 
-
+# Demonstrate ephemeral for cluster membership
+bundle exec ruby create_node.rb
+bundle exec ruby watcher.rb
