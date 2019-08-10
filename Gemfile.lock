@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    zookeeper (1.4.11)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  zookeeper
+
+BUNDLED WITH
+   1.16.1
