@@ -1,10 +1,10 @@
 ---
 ZooKeeper: "A Distributed Coordination Service for Distributed Applications"
-* Originally developed at YAHOO! to support Hadoop
-* Written in JAVA
-* Developing coordination in a distributed system is hard.  Developers often create
+- Originally developed at YAHOO! to support Hadoop-y things
+- Written in JAVA
+- Developing coordination in a distributed system is hard.  Developers often create
   race conditions and deadlocks
-* Zookeeper was created to to relieve distributed applications from having to create
+- Zookeeper was created to to relieve distributed applications from having to create
   their own coordination services from scratch.
 
 ---
@@ -13,7 +13,7 @@ Design Goals
 * Replication - Zookeeper is intended to be replicated over sets of hosts called an
                 "ensemble"
 * Ordered - Zookeeper stamps each update with a transaction number
-* Fast - Given a read dominate workload zookeeper can handle thousands of clients.
+* Fast - Given a read dominate workload Zookeeper can handle thousands of clients.
 
 ---
 Guarantees
@@ -29,7 +29,7 @@ The Hierarchical Namespace
 <Picture of the zookeeper namespace organization>
 
 - Very similar to a filesystem but "znodes" can both hold more znodes or data.
-- intented to store coordination/configuration data data so each node should
+- Intended to store coordination/configuration data so each node should
   be in the byte to kilobyte range
 
 ---
@@ -40,25 +40,36 @@ Features:
   the znode is active.  When the session is deleted the znode is deleted.
 - Zookeeper supports the concepts of watches.  Clients can set a watch on a znode.  A watch will
   be triggered when the znode changes.  When a watch is triggered the client receives a packet
-  to notify it.
+  to notify it that the znode has changed
 
 ---
 Simple API - only these operations are supported
-create - creates a node at a location in the tree
-delete - deletes a node
-exists - tests if a node exists at a location
-get data - reads the data from a node
-set data - writes data to a node
-get children - retrieves a list of children of a node
-sync - waits for data to be propagated
-
+- create - creates a znode at a location in the tree
+- delete - deletes a znode
+- exists - tests if a znode exists at a location
+- get data - reads the data from a znode
+- set data - writes data to a znode
+- get children - retrieves a list of children of a znode
+- sync - waits for data to be propagated
 
 ---
-Downsides to Zookeeper
-- Client Libraries kind of suck
- * Sure you can write to any Zookeeper, but client library is bad at picking
- * Lots of buggy and half finished libraries
-- Not very "cloud native" - relies on stable hostnames and IP addresses
+Clients
+- The Zookeeper project maintains Java and C client libraries
+- Most languages other then Java link againist the C bindings
+- There are LOTS of buggy 3rd party libraries - Go is especially bad
+
+---
+Drawbacks:
+- Not very "cloud native" - lots of internal bugs where it relies on 
+  stable hostnames and IP addresses
+- Lots of sketch client libaries
+- Under the covers its pretty complex
+- No caching
+- I'll put dns/http infront of this - not a good plan
+
+Advantages
+- Battle Tested
+- Strong Consistency Model
 
 ---
 Demo Time!

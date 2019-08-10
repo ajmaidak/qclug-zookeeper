@@ -1,0 +1,31 @@
+# docker compose file
+cat docker-compose.yml
+
+# docker-compose.yml is read automatically by docker-compose up
+docker compose up
+
+# Show containers
+docker ps
+
+# Exec in and play with zkCli.sh
+docker exec -it qclug-zookeeper_zoo1_1 /bin/bash
+
+# zkCli.sh uses environment variables to connect
+zkCli.sh
+
+# list the whole tree
+ls -R /
+
+# Do some trivial Operations
+create /qclug
+set /qclug "icons"
+create /qclug/dinner
+set /qclug/dinner "Rib Co."
+get /qclug
+get /qclug/dinner
+ls -R /qclug
+
+# Demonstrate Failover
+bundle exec ruby show-failover.rb
+
+

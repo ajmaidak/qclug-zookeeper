@@ -1,13 +1,18 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    executables (0.1.0)
+    zk (1.9.6)
+      zookeeper (~> 1.4.0)
     zookeeper (1.4.11)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  executables
+  zk
   zookeeper
 
 BUNDLED WITH
-   1.16.1
+   1.17.3

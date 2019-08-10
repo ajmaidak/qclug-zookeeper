@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-slide-content { font-size:26px; }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Apache Zookeeper
+
+.center[![Center-aligned image](apache-zookeeper.jpeg)]
+
+####Get your consistency on!
+
+---
+
+# What is ZooKeeper?
+
+- _A Distributed Coordination Service for Distributed Applications_
+
+- DIY: distributed coordination == race conditions and deadlocks
+
+- Zookeeper was created as a service developers could use to avoid DIY
+
+---
+
+# Release history
+
+- Originally developed at YAHOO! to support Hadoop-y things (cousin of Google "Chubby")
+
+- Written in JAVA
+
+- First commit was 2006, first release was on source forge in 2007, moved to apache in 2008 with 3.0.0 release
+
+---
+
+# Design Goals  
+
+- Simplicity
+
+- Replication
+
+- Ordered
+
+- Fast
+
+???
+- Simple shared hierarchal namespace organized into a filesystem like tree.
+- Zookeeper is intended to be replicated over sets of hosts called an "ensemble"
+- Zookeeper stamps each update with a transaction number
+- Given a read dominate workload Zookeeper can handle thousands of clients.
+
+---
+
+# Guarantees
+- Sequential Consistency
+
+- Atomicity
+
+- Single System Image
+
+- Reliability
+
+- Timeliness
+
+???
+Updates from a client will be applied in the order that they were sent.
+Updates either succeed or fail. No partial results.
+A client will see the same view of the service regardless of the server that it connects to.
+Once an update has been applied, it will persist from that time forward until a client overwrites the update.
+The clients view of the system is guaranteed to be up-to-date within a certain time bound.
+
+---
+
+# Hierarchical Namespace Storage
+.center[![Center-aligned image](zknamespace.jpg)]
+
+???
+- Very similar to a filesystem but "znodes" can both hold more znodes or data.
+- Intended to store coordination/configuration data so each node should
+  be in the byte to kilobyte range
+
+---
+
+# Features
+
+- Atomic writes to znodes
+
+- Ephemeral znodes
+
+- znodes can be "watched"
+
+???
+Notes:
+- zondes are writen to atomically.  A read gets all the data and write rewrites the entire
+  znode, they are not updated in place.
+- Zookeeper supports ephemeral nodes.  These znodes exists as long as the session that created
+  the znode is active.  When the session is deleted the znode is deleted.
+- Zookeeper supports the concepts of watches.  Clients can set a watch on a znode.  A watch will
+  be triggered when the znode changes.  When a watch is triggered the client receives a packet
+  to notify it that the znode has changed
+
+---
+
+# "Simple API"
+
+Only 7 API Operations
+- create
+- delete
+- exists
+- get data
+- set data
+- get children
+- sync
+
+---
+
+# Offical Clients for Zookeeper
+ 
+- Java
+
+- C
+
+---
+
+# Drawbacks
+
+- Created Before Cloud - (stable IP, Hostname)
+
+- Some questionable client libraries (gozk)
+
+- Kind of complex under the surface
+
+- NO CACHING IS A FEATURE
+
+---
+
+# Advantages
+
+- Lots of production deployment
+
+- Strong Consistency Model
+
+- "ephemeral nodes" provide basic presence information
+
+???
+
+What about consensus? With a little extra work we can also leverage the data versioning and notifications APIs to build distributed primitives such as worker queues and barriers. From there, once we have locks and consensus, we can tackle virtually any distributed problem: master election, quorum commits, and so on. In other words, it becomes your swiss army knife for coordinating distributed services.
+
+by having each worker machine register with Zookeeper, we can perform real-time group membership queries to see which nodes are online, and perhaps even figure out what they are currently doing.
+ 
+* https://www.igvita.com/2010/04/30/distributed-coordination-with-zookeeper/
+
+
+---
+
+# Demo!
+
+.center[![Center-aligned image](demo-environment.png)]
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
