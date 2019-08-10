@@ -1,0 +1,64 @@
+---
+ZooKeeper: "A Distributed Coordination Service for Distributed Applications"
+* Originally developed at YAHOO! to support Hadoop
+* Written in JAVA
+* Developing coordination in a distributed system is hard.  Developers often create
+  race conditions and deadlocks
+* Zookeeper was created to to relieve distributed applications from having to create
+  their own coordination services from scratch.
+
+---
+Design Goals
+* Simplicity - Simple shared hierarchal namespace organized into a filesystem like tree.
+* Replication - Zookeeper is intended to be replicated over sets of hosts called an
+                "ensemble"
+* Ordered - Zookeeper stamps each update with a transaction number
+* Fast - Given a read dominate workload zookeeper can handle thousands of clients.
+
+---
+Guarantees
+* Sequential Consistency - Updates from a client will be applied in the order that they were sent.
+* Atomicity - Updates either succeed or fail. No partial results.
+* Single System Image - A client will see the same view of the service regardless of the server that it connects to.
+* Reliability - Once an update has been applied, it will persist from that time forward until a client overwrites the update.
+* Timeliness - The clients view of the system is guaranteed to be up-to-date within a certain time bound.
+
+---
+The Hierarchical Namespace
+
+<Picture of the zookeeper namespace organization>
+
+- Very similar to a filesystem but "znodes" can both hold more znodes or data.
+- intented to store coordination/configuration data data so each node should
+  be in the byte to kilobyte range
+
+---
+Features:
+- zondes are writen to atomically.  A read gets all the data and write rewrites the entire
+  znode, they are not updated in place.
+- Zookeeper supports ephemeral nodes.  These znodes exists as long as the session that created
+  the znode is active.  When the session is deleted the znode is deleted.
+- Zookeeper supports the concepts of watches.  Clients can set a watch on a znode.  A watch will
+  be triggered when the znode changes.  When a watch is triggered the client receives a packet
+  to notify it.
+
+---
+Simple API - only these operations are supported
+create - creates a node at a location in the tree
+delete - deletes a node
+exists - tests if a node exists at a location
+get data - reads the data from a node
+set data - writes data to a node
+get children - retrieves a list of children of a node
+sync - waits for data to be propagated
+
+
+---
+Downsides to Zookeeper
+- Client Libraries kind of suck
+ * Sure you can write to any Zookeeper, but client library is bad at picking
+ * Lots of buggy and half finished libraries
+- Not very "cloud native" - relies on stable hostnames and IP addresses
+
+---
+Demo Time!
