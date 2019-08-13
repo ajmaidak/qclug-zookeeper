@@ -61,10 +61,13 @@ class: center, middle
 - Fast
 
 ???
-- Simple shared hierarchal namespace organized into a filesystem like tree.
-- Zookeeper is intended to be replicated over sets of hosts called an "ensemble"
-- Zookeeper stamps each update with a transaction number
-- Given a read dominate workload Zookeeper can handle thousands of clients.
+Simple: shared hierarchal namespace organized into a filesystem like tree.
+
+Replication: Zookeeper is intended to be replicated over sets of hosts called an "ensemble"
+
+Ordered: Zookeeper stamps each update with a transaction number
+
+Fast: Given a read dominate workload Zookeeper can handle thousands of clients.
 
 ---
 
@@ -81,9 +84,13 @@ class: center, middle
 
 ???
 Updates from a client will be applied in the order that they were sent.
+
 Updates either succeed or fail. No partial results.
+
 A client will see the same view of the service regardless of the server that it connects to.
+
 Once an update has been applied, it will persist from that time forward until a client overwrites the update.
+
 The clients view of the system is guaranteed to be up-to-date within a certain time bound.
 
 ---
@@ -92,9 +99,9 @@ The clients view of the system is guaranteed to be up-to-date within a certain t
 .center[![Center-aligned image](zknamespace.jpg)]
 
 ???
-- Very similar to a filesystem but "znodes" can both hold more znodes or data.
-- Intended to store coordination/configuration data so each node should
-  be in the byte to kilobyte range
+Very similar to a filesystem but "znodes" can both hold more znodes or data.
+
+Intended to store coordination/configuration data so each node should be in the byte to kilobyte range
 
 ---
 
@@ -107,14 +114,11 @@ The clients view of the system is guaranteed to be up-to-date within a certain t
 - znodes can be "watched"
 
 ???
-Notes:
-- zondes are writen to atomically.  A read gets all the data and write rewrites the entire
-  znode, they are not updated in place.
-- Zookeeper supports ephemeral nodes.  These znodes exists as long as the session that created
-  the znode is active.  When the session is deleted the znode is deleted.
-- Zookeeper supports the concepts of watches.  Clients can set a watch on a znode.  A watch will
-  be triggered when the znode changes.  When a watch is triggered the client receives a packet
-  to notify it that the znode has changed
+zondes are writen to atomically.  A read gets all the data and write rewrites the entire znode, they are not updated in place.
+
+Zookeeper supports ephemeral nodes.  These znodes exists as long as the session that created the znode is active.  When the session is deleted the znode is deleted.
+
+Zookeeper supports the concepts of watches.  Clients can set a watch on a znode.  A watch will be triggered when the znode changes.  When a watch is triggered the client receives a packet to notify it that the znode has changed
 
 ---
 
