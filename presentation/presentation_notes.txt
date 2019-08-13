@@ -1,0 +1,29 @@
+* Slide 4 *
+Simple: shared hierarchal namespace organized into a filesystem like tree.
+Replication: Zookeeper is intended to be replicated over sets of hosts called an "ensemble"
+Ordered: Zookeeper stamps each update with a transaction number
+Fast: Given a read dominate workload Zookeeper can handle thousands of clients.
+
+* Slide 5 *
+Updates from a client will be applied in the order that they were sent.
+Updates either succeed or fail. No partial results.
+A client will see the same view of the service regardless of the server that it connects to.
+Once an update has been applied, it will persist from that time forward until a client overwrites the update.
+The clients view of the system is guaranteed to be up-to-date within a certain time bound.
+
+* Slide 6 *
+Very similar to a filesystem but "znodes" can both hold more znodes or data.
+
+Intended to store coordination/configuration data so each node should be in the byte to kilobyte range
+
+* Slide 7 *
+zondes are writen to atomically. A read gets all the data and write rewrites the entire znode, they are not updated in place.
+
+Zookeeper supports ephemeral nodes. These znodes exists as long as the session that created the znode is active. When the session is deleted the znode is deleted.
+
+Zookeeper supports the concepts of watches. Clients can set a watch on a znode. A watch will be triggered when the znode changes. When a watch is triggered the client receives a packet to notify it that the znode has changed
+
+* Slide 11*
+What about consensus? With a little extra work we can also leverage the data versioning and notifications APIs to build distributed primitives such as worker queues and barriers. From there, once we have locks and consensus, we can tackle virtually any distributed problem: master election, quorum commits, and so on. In other words, it becomes your swiss army knife for coordinating distributed services by having each worker machine register with Zookeeper, we can perform real-time group membership queries to see which nodes are online, and perhaps even figure out what they are currently doing.
+
+https://www.igvita.com/2010/04/30/distributed-coordination-with-zookeeper/
